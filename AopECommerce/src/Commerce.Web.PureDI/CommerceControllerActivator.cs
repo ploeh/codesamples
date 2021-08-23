@@ -70,8 +70,7 @@ namespace Ploeh.Samples.Commerce.Web.PureDI
                         this.Decorate(
                             context,
                             new AdjustInventoryService(
-                                new SqlInventoryRepository(context),
-                                this.Handler<InventoryAdjusted>(context))));
+                                new SqlInventoryRepository(context))));
 
                 case nameof(OrderController):
                     return new OrderController(
@@ -103,8 +102,8 @@ namespace Ploeh.Samples.Commerce.Web.PureDI
             (controller as IDisposable)?.Dispose();
         }
 
-        private ICommandService<TCommand> Decorate<TCommand>(
-            CommerceContext context, ICommandService<TCommand> decoratee)
+        private ICommandHandler<TCommand> Decorate<TCommand>(
+            CommerceContext context, ICommandHandler<TCommand> decoratee)
         {
             // NOTE: Ambient transactions disabled as SQLite does not support it. You can turn it on 
             // after switching to SQL Server by wrapping the TransactionCommandServiceDecorator<TCommand>

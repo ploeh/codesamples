@@ -5,13 +5,13 @@ namespace Ploeh.Samples.Commerce.SqlDataAccess.Aspects
 {
     // This decorator is in charge of calling SaveChanges on the DbContext. This way,
     // business operations and repositories don't have to call save changes.
-    public class SaveChangesCommandServiceDecorator<TCommand> : ICommandService<TCommand>
+    public class SaveChangesCommandServiceDecorator<TCommand> : ICommandHandler<TCommand>
     {
         private readonly CommerceContext context;
-        private readonly ICommandService<TCommand> decoratee;
+        private readonly ICommandHandler<TCommand> decoratee;
 
         public SaveChangesCommandServiceDecorator(
-            CommerceContext context, ICommandService<TCommand> decoratee)
+            CommerceContext context, ICommandHandler<TCommand> decoratee)
         {
             if (context == null) throw new ArgumentNullException(nameof(context));
             if (decoratee == null) throw new ArgumentNullException(nameof(decoratee));

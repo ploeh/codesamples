@@ -58,7 +58,7 @@ namespace Ploeh.Samples.Commerce.Web.MS.DI
                 from i in type.GetInterfaces()
                 where i.IsGenericType
                 where i.GetGenericTypeDefinition()
-                    == typeof(ICommandService<>)
+                    == typeof(ICommandHandler<>)
                 select new { service = i, implementation = type };
 
             foreach (var mapping in mappings)

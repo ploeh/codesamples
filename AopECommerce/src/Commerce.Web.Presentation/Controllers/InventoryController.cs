@@ -12,10 +12,10 @@ namespace Ploeh.Samples.Commerce.Web.Presentation.Controllers
     public class InventoryController : Controller
     {
         private readonly IProductRepository repository;
-        private readonly ICommandService<AdjustInventory> inventoryAdjuster;
+        private readonly ICommandHandler<AdjustInventory> inventoryAdjuster;
 
         public InventoryController(
-            IProductRepository repository, ICommandService<AdjustInventory> inventoryAdjuster)
+            IProductRepository repository, ICommandHandler<AdjustInventory> inventoryAdjuster)
         {
             if (repository == null) throw new ArgumentNullException(nameof(repository));
             if (inventoryAdjuster == null) throw new ArgumentNullException(nameof(inventoryAdjuster));

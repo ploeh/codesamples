@@ -3,7 +3,7 @@ using Ploeh.Samples.Commerce.Domain.Commands;
 
 namespace Ploeh.Samples.Commerce.Domain.CommandServices
 {
-    public class DeleteProductService : ICommandService<DeleteProduct>
+    public class DeleteProductService : ICommandHandler<DeleteProduct>
     {
         private readonly IProductRepository productRepository;
 

@@ -3,7 +3,7 @@ using Ploeh.Samples.Commerce.Domain.Commands;
 
 namespace Ploeh.Samples.Commerce.Domain.CommandServices
 {
-    public class InsertProductService : ICommandService<InsertProduct>
+    public class InsertProductService : ICommandHandler<InsertProduct>
     {
         private readonly IProductRepository repository;
 

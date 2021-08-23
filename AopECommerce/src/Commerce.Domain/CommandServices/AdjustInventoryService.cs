@@ -4,19 +4,16 @@ using Ploeh.Samples.Commerce.Domain.Events;
 
 namespace Ploeh.Samples.Commerce.Domain.CommandServices
 {
-    public class AdjustInventoryService : ICommandService<AdjustInventory>
+    public class AdjustInventoryService : ICommandHandler<AdjustInventory>
     {
         private readonly IInventoryRepository repository;
-        private readonly IEventHandler<InventoryAdjusted> handler;
 
-        public AdjustInventoryService(
-            IInventoryRepository repository, IEventHandler<InventoryAdjusted> handler)
+        public AdjustInventoryService(IInventoryRepository repository)
         {
-            if (repository == null) throw new ArgumentNullException(nameof(repository));
-            if (handler == null) throw new ArgumentNullException(nameof(handler));
+            if (repository == null)
+                throw new ArgumentNullException(nameof(repository));
 
             this.repository = repository;
-            this.handler = handler;
         }
 
         public void Execute(AdjustInventory command)
@@ -31,8 +28,6 @@ namespace Ploeh.Samples.Commerce.Domain.CommandServices
                 throw new InvalidOperationException("Can't decrease below 0.");
 
             this.repository.Save(productInventory);
-
-            this.handler.Handle(new InventoryAdjusted(command.ProductId, quantityAdjustment));
         }
     }
 }

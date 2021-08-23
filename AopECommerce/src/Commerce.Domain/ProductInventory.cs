@@ -2,7 +2,7 @@
 
 namespace Ploeh.Samples.Commerce.Domain
 {
-    public class ProductInventory
+    public sealed class ProductInventory
     {
         public ProductInventory(Guid id) : this(id, 0)
         {

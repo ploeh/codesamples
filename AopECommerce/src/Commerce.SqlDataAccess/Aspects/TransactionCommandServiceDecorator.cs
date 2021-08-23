@@ -6,12 +6,12 @@ namespace Ploeh.Samples.Commerce.SqlDataAccess.Aspects
 {
     // ---- Code Listing 10.15 ----
     public class TransactionCommandServiceDecorator<TCommand>
-        : ICommandService<TCommand>
+        : ICommandHandler<TCommand>
     {
-        private readonly ICommandService<TCommand> decoratee;
+        private readonly ICommandHandler<TCommand> decoratee;
 
         public TransactionCommandServiceDecorator(
-            ICommandService<TCommand> decoratee)
+            ICommandHandler<TCommand> decoratee)
         {
             if (decoratee == null) throw new ArgumentNullException(nameof(decoratee));
 

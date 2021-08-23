@@ -11,15 +11,15 @@ namespace Ploeh.Samples.Commerce.Web.Presentation.ApiControllers
     public class ProductController : Controller
     {
         private readonly IProductRepository productRepository;
-        private readonly ICommandService<DeleteProduct> productDeleter;
-        private readonly ICommandService<InsertProduct> productInserter;
-        private readonly ICommandService<UpdateProduct> productUpdater;
+        private readonly ICommandHandler<DeleteProduct> productDeleter;
+        private readonly ICommandHandler<InsertProduct> productInserter;
+        private readonly ICommandHandler<UpdateProduct> productUpdater;
 
         public ProductController(
             IProductRepository productRepository,
-            ICommandService<DeleteProduct> productDeleter,
-            ICommandService<InsertProduct> productInserter,
-            ICommandService<UpdateProduct> productUpdater)
+            ICommandHandler<DeleteProduct> productDeleter,
+            ICommandHandler<InsertProduct> productInserter,
+            ICommandHandler<UpdateProduct> productUpdater)
         {
             if (productRepository == null) throw new ArgumentNullException(nameof(productRepository));
             if (productDeleter == null) throw new ArgumentNullException(nameof(productDeleter));

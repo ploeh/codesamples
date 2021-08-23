@@ -7,16 +7,16 @@ namespace Ploeh.Samples.Commerce.SqlDataAccess.Aspects
 {
     // ---- Code Listing 10.19 ----
     public class SecureCommandServiceDecorator<TCommand>
-        : ICommandService<TCommand>
+        : ICommandHandler<TCommand>
     {
         private static readonly Role PermittedRole = GetPermittedRole();
 
         private readonly IUserContext userContext;
-        private readonly ICommandService<TCommand> decoratee;
+        private readonly ICommandHandler<TCommand> decoratee;
 
         public SecureCommandServiceDecorator(
             IUserContext userContext,
-            ICommandService<TCommand> decoratee)
+            ICommandHandler<TCommand> decoratee)
         {
             if (userContext == null) throw new ArgumentNullException(nameof(userContext));
             if (decoratee == null) throw new ArgumentNullException(nameof(decoratee));

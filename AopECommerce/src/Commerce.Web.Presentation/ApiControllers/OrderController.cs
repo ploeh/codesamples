@@ -8,12 +8,12 @@ namespace Ploeh.Samples.Commerce.Web.Presentation.ApiControllers
     [ValidateModel]
     public class OrderController : Controller
     {
-        private readonly ICommandService<ApproveOrder> orderApprover;
-        private readonly ICommandService<CancelOrder> orderCancellor;
+        private readonly ICommandHandler<ApproveOrder> orderApprover;
+        private readonly ICommandHandler<CancelOrder> orderCancellor;
 
         public OrderController(
-            ICommandService<ApproveOrder> orderApprover,
-            ICommandService<CancelOrder> orderCancellor)
+            ICommandHandler<ApproveOrder> orderApprover,
+            ICommandHandler<CancelOrder> orderCancellor)
         {
             if (orderApprover == null) throw new ArgumentNullException(nameof(orderApprover));
             if (orderCancellor == null) throw new ArgumentNullException(nameof(orderCancellor));

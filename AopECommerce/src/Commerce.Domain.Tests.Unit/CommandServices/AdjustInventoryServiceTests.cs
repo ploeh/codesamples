@@ -13,18 +13,7 @@ namespace Ploeh.Samples.Commerce.Domain.Tests.Unit.CommandServices
         public void CreateWithNullRepositoryWillThrow()
         {
             Action action = () => new AdjustInventoryService(
-                repository: null,
-                handler: new StubEventHandler<InventoryAdjusted>());
-
-            Assert.Throws<ArgumentNullException>(action);
-        }
-
-        [Fact]
-        public void CreateWithNullHandlerWillThrow()
-        {
-            Action action = () => new AdjustInventoryService(
-                repository: new InMemoryInventoryRepository(),
-                handler: null);
+                repository: null);
 
             Assert.Throws<ArgumentNullException>(action);
         }
@@ -41,19 +30,11 @@ namespace Ploeh.Samples.Commerce.Domain.Tests.Unit.CommandServices
                 Decrease = false,
                 Quantity = quantity
             };
-            var expectedEvent =
-                new { ProductId = productId, QuantityAdjustment = quantity };
             var repository = new InMemoryInventoryRepository();
-            var handler = new SpyEventHandler<InventoryAdjusted>();
-            var sut = new AdjustInventoryService(repository, handler);
+            var sut = new AdjustInventoryService(repository);
 
             sut.Execute(command);
 
-            Assert.Equal(
-                expectedEvent,
-                new {
-                    handler.HandledEvent.ProductId,
-                    handler.HandledEvent.QuantityAdjustment });
             var actualInventory = repository.GetByIdOrNull(productId);
             var expected = new ProductInventory(productId, quantity);
             Assert.Equal(expected, actualInventory);
@@ -71,20 +52,12 @@ namespace Ploeh.Samples.Commerce.Domain.Tests.Unit.CommandServices
                 Decrease = true,
                 Quantity = quantity
             };
-            var expectedEvent =
-                new { ProductId = productId, QuantityAdjustment = -quantity };
             var repository = new InMemoryInventoryRepository();
-            var handler = new SpyEventHandler<InventoryAdjusted>();
-            var sut = new AdjustInventoryService(repository, handler);
+            var sut = new AdjustInventoryService(repository);
             repository.Save(new ProductInventory(productId, quantity: 20));
 
             sut.Execute(command);
 
-            Assert.Equal(
-                expectedEvent,
-                new {
-                    handler.HandledEvent.ProductId,
-                    handler.HandledEvent.QuantityAdjustment });
             var actualInventory = repository.GetByIdOrNull(productId);
             var expected = new ProductInventory(productId, 20 - quantity);
             Assert.Equal(expected, actualInventory);
@@ -103,8 +76,7 @@ namespace Ploeh.Samples.Commerce.Domain.Tests.Unit.CommandServices
             var repository = new InMemoryInventoryRepository();
             repository.Save(new ProductInventory(productId, 1));
             var sut = new AdjustInventoryService(
-                repository,
-                new SpyEventHandler<InventoryAdjusted>());
+                repository);
 
             Assert.Throws<InvalidOperationException>(() => sut.Execute(command));
         }

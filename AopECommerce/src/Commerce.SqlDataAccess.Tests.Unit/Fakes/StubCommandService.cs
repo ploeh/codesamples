@@ -2,7 +2,7 @@
 
 namespace Ploeh.Samples.Commerce.SqlDataAccess.Tests.Unit.Fakes
 {
-    public class StubCommandService<TCommand> : ICommandService<TCommand>
+    public class StubCommandService<TCommand> : ICommandHandler<TCommand>
     {
         public void Execute(TCommand command)
         {

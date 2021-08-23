@@ -106,10 +106,10 @@ namespace Commerce.Web.SimpleInjector
 
             // ---- Start code Listing 14.11 ----
             container.Register(
-                typeof(ICommandService<>), assembly);
+                typeof(ICommandHandler<>), assembly);
 
             container.RegisterDecorator(
-                typeof(ICommandService<>),
+                typeof(ICommandHandler<>),
                 typeof(AuditingCommandServiceDecorator<>));
 
             // NOTE: Ambient transactions disabled as SQLite does not support it. You can turn it on 
@@ -119,11 +119,11 @@ namespace Commerce.Web.SimpleInjector
             //     typeof(TransactionCommandServiceDecorator<>));
 
             container.RegisterDecorator(
-                typeof(ICommandService<>),
+                typeof(ICommandHandler<>),
                 typeof(SaveChangesCommandServiceDecorator<>));
 
             container.RegisterDecorator(
-                typeof(ICommandService<>),
+                typeof(ICommandHandler<>),
                 typeof(SecureCommandServiceDecorator<>));
             // ---- End code Listing 14.11 ----
 

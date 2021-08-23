@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Ploeh.Samples.Commerce.SqlDataAccess.Tests.Unit.Fakes
 {
-    public class SpyCommandService<TCommand> : ICommandService<TCommand>
+    public class SpyCommandService<TCommand> : ICommandHandler<TCommand>
     {
         public List<TCommand> ExecutedCommands { get; } = new List<TCommand>();
 

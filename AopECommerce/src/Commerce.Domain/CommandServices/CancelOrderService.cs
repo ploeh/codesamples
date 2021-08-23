@@ -4,7 +4,7 @@ using Ploeh.Samples.Commerce.Domain.Events;
 
 namespace Ploeh.Samples.Commerce.Domain.CommandServices
 {
-    public class CancelOrderService : ICommandService<CancelOrder>
+    public class CancelOrderService : ICommandHandler<CancelOrder>
     {
         private readonly IOrderRepository repository;
         private readonly IEventHandler<OrderCancelled> handler;

@@ -6,18 +6,18 @@ namespace Ploeh.Samples.Commerce.SqlDataAccess.Aspects
     // ---- Code Listing 10.16 ----
     // In contrast to listing 10.16, this decorator does not call SaveChanges anymore.
     // This is moved to the SaveChangesCommandServiceDecorator<TCommand>.
-    public class AuditingCommandServiceDecorator<TCommand> : ICommandService<TCommand>
+    public class AuditingCommandServiceDecorator<TCommand> : ICommandHandler<TCommand>
     {
         private readonly IUserContext userContext;
         private readonly ITimeProvider timeProvider;
         private readonly CommerceContext context;
-        private readonly ICommandService<TCommand> decoratee;
+        private readonly ICommandHandler<TCommand> decoratee;
 
         public AuditingCommandServiceDecorator(
             IUserContext userContext,
             ITimeProvider timeProvider,
             CommerceContext context,
-            ICommandService<TCommand> decoratee)
+            ICommandHandler<TCommand> decoratee)
         {
             if (userContext == null) throw new ArgumentNullException(nameof(userContext));
             if (timeProvider == null) throw new ArgumentNullException(nameof(timeProvider));

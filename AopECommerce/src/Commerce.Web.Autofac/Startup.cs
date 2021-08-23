@@ -59,19 +59,19 @@ namespace Commerce.Web.Autofac
             builder.Register(c => new CommerceContext(this.Configuration.ConnectionString))
                 .InstancePerLifetimeScope();
 
-            builder.RegisterAssemblyTypes(domainAssembly).AsClosedTypesOf(typeof(ICommandService<>));
+            builder.RegisterAssemblyTypes(domainAssembly).AsClosedTypesOf(typeof(ICommandHandler<>));
 
             builder.RegisterGenericDecorator(
-                typeof(AuditingCommandServiceDecorator<>), typeof(ICommandService<>));
+                typeof(AuditingCommandServiceDecorator<>), typeof(ICommandHandler<>));
 
             // NOTE: Ambient transactions disabled as SQLite does not support it. You can turn it on 
             // after switching to SQL Server by uncommenting the next line.
             //builder.RegisterGenericDecorator(typeof(TransactionCommandServiceDecorator<>), typeof(ICommandService<>));
 
             builder.RegisterGenericDecorator(
-                typeof(SaveChangesCommandServiceDecorator<>), typeof(ICommandService<>));
+                typeof(SaveChangesCommandServiceDecorator<>), typeof(ICommandHandler<>));
             builder.RegisterGenericDecorator(
-                typeof(SecureCommandServiceDecorator<>), typeof(ICommandService<>));
+                typeof(SecureCommandServiceDecorator<>), typeof(ICommandHandler<>));
 
             // ---- Start code section 13.4.4 ----
             builder.RegisterAssemblyTypes(domainAssembly)

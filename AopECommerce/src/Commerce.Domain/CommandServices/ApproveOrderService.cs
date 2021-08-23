@@ -4,7 +4,7 @@ using Ploeh.Samples.Commerce.Domain.Events;
 
 namespace Ploeh.Samples.Commerce.Domain.CommandServices
 {
-    public class ApproveOrderService : ICommandService<ApproveOrder>
+    public class ApproveOrderService : ICommandHandler<ApproveOrder>
     {
         private readonly IOrderRepository repository;
         private readonly IEventHandler<OrderApproved> handler;
