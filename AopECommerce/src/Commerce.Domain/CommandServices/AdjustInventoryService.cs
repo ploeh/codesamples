@@ -24,9 +24,9 @@ namespace Ploeh.Samples.Commerce.Domain.CommandServices
             int quantityAdjustment = command.Quantity * (command.Decrease ? -1 : 1);
 
             var productInventory = this.repository.GetByIdOrNull(command.ProductId)
-                ?? new ProductInventory { Id = command.ProductId };
+                ?? new ProductInventory(command.ProductId);
 
-            productInventory.Quantity += quantityAdjustment;
+            productInventory = productInventory.AdjustQuantity(quantityAdjustment);
 
             if (productInventory.Quantity < 0) throw new InvalidOperationException("Can't decrease below 0.");
 

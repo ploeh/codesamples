@@ -69,7 +69,7 @@ namespace Ploeh.Samples.Commerce.Domain.Tests.Unit.CommandServices
 
             var sut = new AdjustInventoryService(repository, handler);
 
-            repository.Save(new ProductInventory { Id = productId, Quantity = 20 });
+            repository.Save(new ProductInventory(productId, quantity: 20));
 
             // Act
             sut.Execute(command);
