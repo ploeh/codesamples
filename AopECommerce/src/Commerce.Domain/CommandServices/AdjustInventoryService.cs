@@ -21,11 +21,10 @@ namespace Ploeh.Samples.Commerce.Domain.CommandServices
 
         public void Execute(AdjustInventory command)
         {
-            int quantityAdjustment = command.Quantity * (command.Decrease ? -1 : 1);
-
             var productInventory = this.repository.GetByIdOrNull(command.ProductId)
                 ?? new ProductInventory(command.ProductId);
 
+            int quantityAdjustment = command.Quantity * (command.Decrease ? -1 : 1);
             productInventory = productInventory.AdjustQuantity(quantityAdjustment);
 
             if (productInventory.Quantity < 0)
