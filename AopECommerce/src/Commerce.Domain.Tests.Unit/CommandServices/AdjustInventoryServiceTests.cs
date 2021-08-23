@@ -56,7 +56,8 @@ namespace Ploeh.Samples.Commerce.Domain.Tests.Unit.CommandServices
                 expected: expectedEvent,
                 actual: new { handler.HandledEvent.ProductId, handler.HandledEvent.QuantityAdjustment });
             var actualInventory = repository.GetByIdOrNull(productId);
-            Assert.NotNull(actualInventory);
+            var expected = new ProductInventory(productId, 10);
+            Assert.Equal(expected, actualInventory);
         }
 
         [Fact]
@@ -82,7 +83,8 @@ namespace Ploeh.Samples.Commerce.Domain.Tests.Unit.CommandServices
                 expected: expectedEvent,
                 actual: new { handler.HandledEvent.ProductId, handler.HandledEvent.QuantityAdjustment });
             var actualInventory = repository.GetByIdOrNull(productId);
-            Assert.NotNull(actualInventory);
+            var expected = new ProductInventory(productId, 15);
+            Assert.Equal(expected, actualInventory);
         }
     }
 }
