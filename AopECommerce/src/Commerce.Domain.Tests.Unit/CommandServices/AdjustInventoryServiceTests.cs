@@ -35,13 +35,15 @@ namespace Ploeh.Samples.Commerce.Domain.Tests.Unit.CommandServices
             Assert.Throws<ArgumentNullException>(action);
         }
 
-        [Fact]
-        public void IncreaseInventory()
+        [Theory]
+        [InlineData(05)]
+        [InlineData(10)]
+        public void IncreaseInventory(int quantity)
         {
             // Arrange
             Guid productId = Guid.NewGuid();
-            var command = new AdjustInventory { ProductId = productId, Decrease = false, Quantity = 10 };
-            var expectedEvent = new { ProductId = productId, QuantityAdjustment = 10 };
+            var command = new AdjustInventory { ProductId = productId, Decrease = false, Quantity = quantity };
+            var expectedEvent = new { ProductId = productId, QuantityAdjustment = quantity };
 
             var repository = new InMemoryInventoryRepository();
             var handler = new SpyEventHandler<InventoryAdjusted>();
@@ -56,17 +58,19 @@ namespace Ploeh.Samples.Commerce.Domain.Tests.Unit.CommandServices
                 expected: expectedEvent,
                 actual: new { handler.HandledEvent.ProductId, handler.HandledEvent.QuantityAdjustment });
             var actualInventory = repository.GetByIdOrNull(productId);
-            var expected = new ProductInventory(productId, 10);
+            var expected = new ProductInventory(productId, quantity);
             Assert.Equal(expected, actualInventory);
         }
 
-        [Fact]
-        public void DecreaseInventory()
+        [Theory]
+        [InlineData(5)]
+        [InlineData(6)]
+        public void DecreaseInventory(int quantity)
         {
             // Arrange
             Guid productId = Guid.NewGuid();
-            var command = new AdjustInventory { ProductId = productId, Decrease = true, Quantity = 5 };
-            var expectedEvent = new { ProductId = productId, QuantityAdjustment = -5 };
+            var command = new AdjustInventory { ProductId = productId, Decrease = true, Quantity = quantity };
+            var expectedEvent = new { ProductId = productId, QuantityAdjustment = -quantity };
 
             var repository = new InMemoryInventoryRepository();
             var handler = new SpyEventHandler<InventoryAdjusted>();
@@ -83,7 +87,7 @@ namespace Ploeh.Samples.Commerce.Domain.Tests.Unit.CommandServices
                 expected: expectedEvent,
                 actual: new { handler.HandledEvent.ProductId, handler.HandledEvent.QuantityAdjustment });
             var actualInventory = repository.GetByIdOrNull(productId);
-            var expected = new ProductInventory(productId, 15);
+            var expected = new ProductInventory(productId, 20 - quantity);
             Assert.Equal(expected, actualInventory);
         }
     }
