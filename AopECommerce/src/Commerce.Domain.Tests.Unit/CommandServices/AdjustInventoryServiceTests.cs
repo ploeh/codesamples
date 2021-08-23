@@ -90,5 +90,24 @@ namespace Ploeh.Samples.Commerce.Domain.Tests.Unit.CommandServices
             var expected = new ProductInventory(productId, 20 - quantity);
             Assert.Equal(expected, actualInventory);
         }
+
+        [Fact]
+        public void DecreaseTooMuch()
+        {
+            var productId = Guid.NewGuid();
+            var command = new AdjustInventory
+            {
+                ProductId = productId,
+                Decrease = true,
+                Quantity = 2
+            };
+            var repository = new InMemoryInventoryRepository();
+            repository.Save(new ProductInventory(productId, 1));
+            var sut = new AdjustInventoryService(
+                repository,
+                new SpyEventHandler<InventoryAdjusted>());
+
+            Assert.Throws<InvalidOperationException>(() => sut.Execute(command));
+        }
     }
 }
