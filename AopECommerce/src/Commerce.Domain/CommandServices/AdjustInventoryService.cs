@@ -30,7 +30,7 @@ namespace Ploeh.Samples.Commerce.Domain.CommandServices
 
             if (productInventory.Quantity < 0) throw new InvalidOperationException("Can't decrease below 0.");
 
-            //this.repository.Save(productInventory);
+            this.repository.Save(new ProductInventory(command.ProductId));
 
             this.handler.Handle(new InventoryAdjusted(command.ProductId, quantityAdjustment));
         }

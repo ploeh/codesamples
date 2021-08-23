@@ -43,9 +43,10 @@ namespace Ploeh.Samples.Commerce.Domain.Tests.Unit.CommandServices
             var command = new AdjustInventory { ProductId = productId, Decrease = false, Quantity = 10 };
             var expectedEvent = new { ProductId = productId, QuantityAdjustment = 10 };
 
+            var repository = new InMemoryInventoryRepository();
             var handler = new SpyEventHandler<InventoryAdjusted>();
 
-            var sut = new AdjustInventoryService(new InMemoryInventoryRepository(), handler);
+            var sut = new AdjustInventoryService(repository, handler);
 
             // Act
             sut.Execute(command);
@@ -54,6 +55,8 @@ namespace Ploeh.Samples.Commerce.Domain.Tests.Unit.CommandServices
             Assert.Equal(
                 expected: expectedEvent,
                 actual: new { handler.HandledEvent.ProductId, handler.HandledEvent.QuantityAdjustment });
+            var actualInventory = repository.GetByIdOrNull(productId);
+            Assert.NotNull(actualInventory);
         }
 
         [Fact]
@@ -78,6 +81,8 @@ namespace Ploeh.Samples.Commerce.Domain.Tests.Unit.CommandServices
             Assert.Equal(
                 expected: expectedEvent,
                 actual: new { handler.HandledEvent.ProductId, handler.HandledEvent.QuantityAdjustment });
+            var actualInventory = repository.GetByIdOrNull(productId);
+            Assert.NotNull(actualInventory);
         }
     }
 }
