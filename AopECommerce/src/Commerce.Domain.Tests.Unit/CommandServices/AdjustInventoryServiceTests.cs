@@ -36,7 +36,7 @@ namespace Ploeh.Samples.Commerce.Domain.Tests.Unit.CommandServices
         }
 
         [Fact]
-        public void IncreasingInventoryOnNewProductPublishesExpectedEvent()
+        public void IncreaseInventory()
         {
             // Arrange
             Guid productId = Guid.NewGuid();
@@ -57,7 +57,7 @@ namespace Ploeh.Samples.Commerce.Domain.Tests.Unit.CommandServices
         }
 
         [Fact]
-        public void DecreasingInventoryOnExistingProductPublishesExpectedEvent()
+        public void DecreaseInventory()
         {
             // Arrange
             Guid productId = Guid.NewGuid();
