@@ -13,6 +13,19 @@ namespace Ploeh.Samples.Commerce.Domain
             Action<T1> action = x => source.Execute(selector(x));
             return new DelegatingCommandHandler<T1>(action);
         }
+
+        public static Action<T1> ContraMap<T, T1>(
+            this Action<T> source,
+            Func<T1, T> selector)
+        {
+            return x => source(selector(x));
+        }
+
+        public static ICommandHandler<T> AsCommandHandler<T>(
+            this Action<T> action)
+        {
+            return new DelegatingCommandHandler<T>(action);
+        }
     }
 
     public class DelegatingCommandHandler<T> : ICommandHandler<T>

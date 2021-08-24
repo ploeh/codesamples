@@ -19,11 +19,12 @@ namespace Ploeh.Samples.Commerce.Domain.Tests.Unit
                 this.repository = repository;
 
                 inventoryAdjuster =
-                    new DelegatingCommandHandler<ProductInventory>(repository.Save)
+                    ((Action<ProductInventory>)repository.Save)
                         .ContraMap((ValueTuple<AdjustInventory, ProductInventory> t) =>
                             (t.Item2 ?? new ProductInventory(t.Item1.ProductId)).Handle(t.Item1))
                         .ContraMap((AdjustInventory cmd) =>
-                            (cmd, repository.GetByIdOrNull(cmd.ProductId)));
+                            (cmd, repository.GetByIdOrNull(cmd.ProductId)))
+                        .AsCommandHandler();
             }
 
             public void Adjust(AdjustInventory command)
