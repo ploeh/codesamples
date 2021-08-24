@@ -12,20 +12,22 @@ namespace Ploeh.Samples.Commerce.Domain.Tests.Unit
         private class PretendInventoryController
         {
             private readonly IInventoryRepository repository;
+            private readonly ICommandHandler<AdjustInventory> inventoryAdjuster;
 
             public PretendInventoryController(IInventoryRepository repository)
             {
                 this.repository = repository;
+
+                inventoryAdjuster =
+                    new DelegatingCommandHandler<ProductInventory>(repository.Save)
+                        .ContraMap((ValueTuple<AdjustInventory, ProductInventory> t) =>
+                            (t.Item2 ?? new ProductInventory(t.Item1.ProductId)).Handle(t.Item1))
+                        .ContraMap((AdjustInventory cmd) =>
+                            (cmd, repository.GetByIdOrNull(cmd.ProductId)));
             }
 
             public void Adjust(AdjustInventory command)
             {
-                var inventoryAdjuster =
-                    new DelegatingCommandHandler<ProductInventory>(repository.Save)
-                        .ContraMap((ProductInventory inv) =>
-                            (inv ?? new ProductInventory(command.ProductId)).Handle(command))
-                        .ContraMap((AdjustInventory cmd) =>
-                            repository.GetByIdOrNull(cmd.ProductId));
                 inventoryAdjuster.Execute(command);
             }
         }
