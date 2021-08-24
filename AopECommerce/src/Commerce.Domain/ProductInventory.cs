@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ploeh.Samples.Commerce.Domain.Commands;
+using System;
 
 namespace Ploeh.Samples.Commerce.Domain
 {
@@ -25,6 +26,12 @@ namespace Ploeh.Samples.Commerce.Domain
         public ProductInventory AdjustQuantity(int adjustment)
         {
             return WithQuantity(Quantity + adjustment);
+        }
+
+        public ProductInventory Handle(AdjustInventory command)
+        {
+            var adjustment = command.Quantity * (command.Decrease ? -1 : 1);
+            return AdjustQuantity(adjustment);
         }
 
         public override bool Equals(object obj)
