@@ -35,5 +35,16 @@ namespace Ploeh.Samples.Commerce.Domain.Tests.Unit
 
             Assert.Equal(sut.WithQuantity(expected), actual);
         }
+
+        [Theory]
+        [InlineData( -1)]
+        [InlineData( -2)]
+        [InlineData(-19)]
+        public void SetNegativeQuantity(int negative)
+        {
+            var id = Guid.NewGuid();
+            Action action = () => new ProductInventory(id, negative);
+            Assert.Throws<ArgumentOutOfRangeException>(action);
+        }
     }
 }

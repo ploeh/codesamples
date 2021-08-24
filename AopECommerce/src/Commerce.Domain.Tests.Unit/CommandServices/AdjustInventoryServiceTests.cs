@@ -78,7 +78,8 @@ namespace Ploeh.Samples.Commerce.Domain.Tests.Unit.CommandServices
             var sut = new AdjustInventoryService(
                 repository);
 
-            Assert.Throws<InvalidOperationException>(() => sut.Execute(command));
+            Assert.Throws<ArgumentOutOfRangeException>(
+                () => sut.Execute(command));
         }
     }
 }

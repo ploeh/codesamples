@@ -11,6 +11,11 @@ namespace Ploeh.Samples.Commerce.Domain
 
         public ProductInventory(Guid id, int quantity)
         {
+            if (quantity < 0)
+                throw new ArgumentOutOfRangeException(
+                    nameof(quantity),
+                    "Negative quantity not allowed.");
+
             Id = id;
             Quantity = quantity;
         }
