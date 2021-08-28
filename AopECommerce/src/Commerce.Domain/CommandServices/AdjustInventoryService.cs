@@ -18,11 +18,9 @@ namespace Ploeh.Samples.Commerce.Domain.CommandServices
 
         public void Execute(AdjustInventory command)
         {
-            var productInventory = this.repository.GetByIdOrNull(command.ProductId)
-                ?? new ProductInventory(command.ProductId);
-
-            productInventory = productInventory.Handle(command);
-
+            var productInventory = this.repository.GetByIdOrNull(command.ProductId);
+            productInventory =
+                (productInventory ?? new ProductInventory(command.ProductId)).Handle(command);
             this.repository.Save(productInventory);
         }
     }

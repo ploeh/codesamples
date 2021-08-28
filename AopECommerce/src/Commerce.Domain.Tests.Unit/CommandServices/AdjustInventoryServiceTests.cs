@@ -81,5 +81,19 @@ namespace Ploeh.Samples.Commerce.Domain.Tests.Unit.CommandServices
             Assert.Throws<ArgumentOutOfRangeException>(
                 () => sut.Execute(command));
         }
+
+        [Fact]
+        public void GracefullHandleMissingInventory()
+        {
+            var repository = new InMemoryInventoryRepository();
+            var sut = new AdjustInventoryService(repository);
+
+            var id = Guid.NewGuid();
+            var dummy = new AdjustInventory { ProductId = id };
+            sut.Execute(dummy);
+
+            var stored = repository.GetByIdOrNull(id);
+            Assert.NotNull(stored);
+        }
     }
 }
